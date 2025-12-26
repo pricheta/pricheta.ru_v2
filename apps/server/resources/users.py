@@ -24,6 +24,6 @@ async def create(
 async def get(
     username: str,
     users_database: UsersDatabase = Depends(get_postgre_sql_users_database),
-    _: User = Depends(AUTH_SERVICE.get_current_user),
+    _: User = Depends(AUTH_SERVICE.get_user),
 ) -> User:
     return users_database.get_user(username)

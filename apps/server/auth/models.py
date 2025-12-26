@@ -1,10 +1,24 @@
+from datetime import datetime
+from enum import StrEnum, auto
+from typing import Literal
+
 from pydantic import BaseModel
+
+
+
+
+class Permission(StrEnum):
+    READ_USERS_DB = auto()
 
 
 class User(BaseModel):
     username: str
+    permissions: list[Permission]
 
 
-class Credentials(BaseModel):
+class AccessTokenPayload(BaseModel):
     username: str
-    password: str
+    permissions: list[Permission]
+    exp: datetime
+    iat: datetime
+
