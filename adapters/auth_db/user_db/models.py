@@ -12,7 +12,5 @@ class User(Base):
     username = Column(String(50), primary_key=True, index=True)
     password = Column("password", String(128), nullable=False)
     permissions = Column(
-        ARRAY(Enum(Permission, native_enum=False)),
-        nullable=False,
-        default=list
+        ARRAY(Enum(Permission, native_enum=False)), nullable=False, default=list
     )
