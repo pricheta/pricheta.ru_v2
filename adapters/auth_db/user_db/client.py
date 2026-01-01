@@ -51,7 +51,10 @@ class PostgreSQL(UsersDatabase):
             user = session.query(User).where(User.username == username).first()
 
             if not user:
-                raise ValueError(f"User '{username}' not found")
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"User '{username}' not found",
+                )
 
             if permission not in user.permissions:
                 user.permissions.append(permission)
