@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 class Permission(StrEnum):
     READ_USERS_DB = auto()
+    WRITE_USERS_DB = auto()
 
 
 class User(BaseModel):

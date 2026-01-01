@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 
 from apps.server.auth_service.auth_service import AuthService
@@ -8,7 +8,7 @@ from apps.server.deps import (
     get_postgre_sql_users_database,
     get_auth_service,
 )
-from apps.server.models import CreateUserRequest
+from apps.server.models import CreateUserRequest, AppendPermissionRequest
 from apps.server.ports import UsersDatabase
 
 router = APIRouter()
@@ -33,4 +33,24 @@ async def get(
     users_database: UsersDatabase = Depends(get_postgre_sql_users_database),
     _: User = Depends(AUTH_SERVICE.get_current_user_and_check_permissions()),
 ) -> User:
-    return users_database.get_user(username)
+    db_user = users_database.get_user(username)
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+
+    return User(username=db_user.username, permissions=db_user.permissions)
+
+
+@router.post(
+    "/append_permission}",
+    tags=TAGS,
+    summary="Добавление пермишна",
+    status_code=status.HTTP_200_OK,
+)
+async def append_permission(
+    request: AppendPermissionRequest,
+    users_db: UsersDatabase = Depends(get_postgre_sql_users_database),
+) -> None:
+    users_db.append_permission(request.username, request.permission)

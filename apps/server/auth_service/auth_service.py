@@ -44,7 +44,6 @@ class AuthService:
             payload = jwt.decode(
                 token, self.config.SECRET_KEY, algorithms=[self.config.ALGORITHM]
             )
-            print(payload)
             return AccessTokenPayload.model_validate(payload)
 
         except JWTError as exc:
@@ -77,7 +76,7 @@ class AuthService:
             if required_permission and required_permission not in user.permissions:
                 raise HTTPException(
                     status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Permission denied",
+                    detail="Access denied",
                 )
 
             return user

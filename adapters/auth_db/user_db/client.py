@@ -1,10 +1,12 @@
 from fastapi import HTTPException
 from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import sessionmaker
 from starlette import status
 
 from adapters.auth_db.user_db.config import PostgreSQLAuthDBConfig
 from adapters.auth_db.user_db.models import User
+from apps.server.auth_service.models import Permission
 from apps.server.ports import UsersDatabase
 
 
@@ -40,5 +42,25 @@ class PostgreSQL(UsersDatabase):
             )
             session.add(user)
             session.commit()
+        finally:
+            session.close()
+
+    def append_permission(self, username: str, permission: Permission) -> None:
+        session = self.session_maker()
+        try:
+            user = session.query(User).where(User.username == username).first()
+
+            if not user:
+                raise ValueError(f"User '{username}' not found")
+
+            if permission not in user.permissions:
+                user.permissions.append(permission)
+                session.commit()
+            else:
+                session.rollback()
+
+        except SQLAlchemyError as e:
+            session.rollback()
+            raise e
         finally:
             session.close()
