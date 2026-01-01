@@ -2,8 +2,8 @@ from functools import lru_cache
 
 from adapters.auth_db.user_db.client import PostgreSQL
 from adapters.auth_db.user_db.config import PostgreSQLAuthDBConfig
-from apps.server.auth.auth_service import AuthService
-from apps.server.auth.config import AuthServiceConfig
+from apps.server.auth_service.auth_service import AuthService
+from apps.server.auth_service.config import AuthServiceConfig
 
 
 @lru_cache(maxsize=1)

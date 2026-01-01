@@ -1,7 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-
 class AuthServiceConfig(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
@@ -10,4 +9,5 @@ class AuthServiceConfig(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="AUTH_SERVICE_",
         env_file=".env",
+        extra="ignore",
     )

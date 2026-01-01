@@ -16,7 +16,6 @@ class PostgreSQL(UsersDatabase):
             autocommit=False, autoflush=False, bind=self.engine
         )
 
-
     def get_user(self, username: str) -> User | None:
         session = self.session_maker()
         try:

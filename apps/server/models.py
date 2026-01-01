@@ -1,12 +1,11 @@
 from pydantic import BaseModel
 
-from apps.server.auth.models import Credentials
-
-
-class BaseRequest(BaseModel):
-    credentials: Credentials
-
 
 class CreateUserRequest(BaseModel):
     username: str
     password: str
+
+
+class AuthResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"

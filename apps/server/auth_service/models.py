@@ -1,10 +1,7 @@
 from datetime import datetime
 from enum import StrEnum, auto
-from typing import Literal
 
 from pydantic import BaseModel
-
-
 
 
 class Permission(StrEnum):
@@ -21,4 +18,3 @@ class AccessTokenPayload(BaseModel):
     permissions: list[Permission]
     exp: datetime
     iat: datetime
-

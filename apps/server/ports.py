@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from apps.server.auth.models import User
+from adapters.auth_db.user_db.models import User
 
 
 class UsersDatabase(Protocol):
